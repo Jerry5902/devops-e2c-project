@@ -1,7 +1,6 @@
-  GNU nano 7.2                                          .github/workflows/deploy.yml
 name: CI-CD Deployment
 
-on:
+"on":
   push:
     branches:
       - main
@@ -14,13 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: SSH test to EC2
+      - name: Deploy application on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "Connected to EC2 successfully"
-            whoami
-            hostname
+            cd ${{ secrets.EC2_PATH }}
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
