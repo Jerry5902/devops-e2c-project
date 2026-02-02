@@ -1,12 +1,10 @@
-version: "3.8"
- 
 services:
   app:
     build: ./app
     container_name: node-app
     expose:
       - "3000"
- 
+
   nginx:
     image: nginx:latest
     container_name: nginx-proxy
